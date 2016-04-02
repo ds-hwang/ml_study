@@ -7,6 +7,11 @@ function out = mapFeature(X1, X2)
 %   Returns a new feature array with more features, comprising of 
 %   X1, X2, X1.^2, X2.^2, X1*X2, X1*X2.^2, etc..
 %
+%   let's calculate permutation p(n)
+%   p(n) = n + 1 + p(n - 1)
+%   p(0) = 1
+%   p(n) = (n + 1)(n + 2) / 2
+
 %   Inputs X1, X2 must be the same size
 %
 

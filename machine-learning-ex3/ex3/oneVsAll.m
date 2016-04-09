@@ -1,4 +1,4 @@
-function [all_theta] = oneVsAll(X, y, num_labels, lambda)
+function [all_theta, all_theta2] = oneVsAll(X, y, num_labels, lambda)
 %ONEVSALL trains multiple logistic regression classifiers and returns all
 %the classifiers in a matrix all_theta, where the i-th row of all_theta 
 %corresponds to the classifier for label i
@@ -25,7 +25,15 @@ options = optimset('GradObj', 'on', 'MaxIter', 50);
 % This function will return theta and the cost 
 for i = 1:num_labels
   all_theta(i, :) = fmincg(@(t)(lrCostFunction(t, X, (y == i), lambda)), initial_theta, options);
+%  all_theta(i, :) = fminunc(@(t)(lrCostFunction(t, X, (y == i), lambda)), initial_theta, options);
 end
+
+y_10 = [y==1:10];
+y_10 = y_10 * 20 - 10;
+lambda_eye = lambda * eye(n + 1);
+lambda_eye(1, 1) = 0;
+all_theta2 = inv(X' * X + lambda_eye) * X' * y_10;
+all_theta2 = all_theta2';
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the following code to train num_labels

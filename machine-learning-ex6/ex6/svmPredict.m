@@ -19,6 +19,7 @@ m = size(X, 1);
 p = zeros(m, 1);
 pred = zeros(m, 1);
 
+% prediction(X(i)) = sum_j(alpha(j) * model.y(j) * model.kernalFunction(X(i), model.X(j)));
 if strcmp(func2str(model.kernelFunction), 'linearKernel')
     % We can use the weights and bias directly if working with the 
     % linear kernel
@@ -28,7 +29,8 @@ elseif strfind(func2str(model.kernelFunction), 'gaussianKernel')
     % This is equivalent to computing the kernel on every pair of examples
     X1 = sum(X.^2, 2);
     X2 = sum(model.X.^2, 2)';
-    K = bsxfun(@plus, X1, bsxfun(@plus, X2, - 2 * X * model.X'));
+    % K = bsxfun(@plus, X1, bsxfun(@plus, X2, - 2 * X * model.X'));
+    K = X1 + X2 - 2 * X * model.X';
     K = model.kernelFunction(1, 0) .^ K;
     K = bsxfun(@times, model.y', K);
     K = bsxfun(@times, model.alphas', K);
